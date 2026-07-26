@@ -3,10 +3,10 @@
     public class ProductModel
     {
         public int Id { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
-        public string Category { get; set; }
-        public int Price { get; set; }
+        public required string ProductName { get; set; }
+        public required string ProductDescription { get; set; }
+        public required string Category { get; set; }
+        public required int Price { get; set; }
         public int StockRemaining { get; set; }
     }
 }
