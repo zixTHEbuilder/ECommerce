@@ -6,6 +6,8 @@ namespace ECommerce.Data
 {
     public class StoreContext (DbContextOptions<StoreContext> options) : DbContext(options)
     {
-        public DbSet<ProductModel> Product => Set<ProductModel>();
+        public DbSet<ProductModel> Products => Set<ProductModel>();
+        public DbSet<UserProducts> UserProducts => Set<UserProducts>();
+        public DbSet<Cart> Cart => Set<Cart>();
     }
 }
