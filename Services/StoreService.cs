@@ -145,7 +145,7 @@ namespace ECommerce.Services
                 Console.WriteLine($"Database Error : {e.Message}");
                 return new PurchaseResult<BillDto>(PurchaseError.DatabaseError, "An unexpected error occurred while processing your purchase.");
             }
-        }w
+        }
         //implement a service to buy a single product right away without using cart if the user instantly wants to buy
     }
 }
