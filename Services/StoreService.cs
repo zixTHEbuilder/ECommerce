@@ -2,9 +2,8 @@
 using ECommerce.Dtos;
 using ECommerce.Helpers;
 using ECommerce.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ECommerce.Services
 {
@@ -91,8 +90,11 @@ namespace ECommerce.Services
             if (user.Balance < totalCost)
                 return new PurchaseResult<BillDto>(PurchaseError.InsufficientBalance, "Insufficient Balance");
 
-            using var authTransaction = await _auth.Database.BeginTransactionAsync();
-            using var storeTransaction = await _store.Database.BeginTransactionAsync();
+            //Handle errors by cancelling if something goes wrong while saving data into the database
+            await _auth.Database.OpenConnectionAsync();
+            using var transaction = await _auth.Database.BeginTransactionAsync();
+            await _store.Database.UseTransactionAsync(transaction.GetDbTransaction());
+
 
             try
             {
@@ -132,16 +134,13 @@ namespace ECommerce.Services
                 await _auth.SaveChangesAsync();
                 await _store.SaveChangesAsync();
 
-                await authTransaction.CommitAsync();
-                await storeTransaction.CommitAsync();
+                await transaction.CommitAsync();
 
                 var billDto = new BillDto(user.Username, billItems, totalCost, DateTime.UtcNow);
                 return new PurchaseResult<BillDto>(PurchaseError.None, "Successfully Purchased", billDto);
             }
             catch (Exception e)
             {
-                await authTransaction.RollbackAsync();
-                await storeTransaction.RollbackAsync();
                 Console.WriteLine($"Database Error : {e.Message}");
                 return new PurchaseResult<BillDto>(PurchaseError.DatabaseError, "An unexpected error occurred while processing your purchase.");
             }
