@@ -9,7 +9,7 @@ namespace ECommerce.Models
         public int UserId { get; set; }
         public int ProductId { get; set; }
         public int ProductQuantity { get; set; }
-        public int PurchasePrice { get; set; }
+        public decimal PurchasePrice { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime LastPurchaseDate { get; set; }
     }

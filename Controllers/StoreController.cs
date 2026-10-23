@@ -55,5 +55,10 @@ namespace ECommerce.Controllers
             
             return Ok(purchased);
         }
+        [HttpPost]
+        public async Task<IActionResult> PurchaseNow()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

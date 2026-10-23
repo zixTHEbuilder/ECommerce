@@ -3,7 +3,7 @@
     public record BillItemDto
     (
         string ProductName,
-        int Price,
+        decimal Price,
         int Quantity,
         decimal Subtotal
     );

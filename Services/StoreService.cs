@@ -145,6 +145,13 @@ namespace ECommerce.Services
                 return new PurchaseResult<BillDto>(PurchaseError.DatabaseError, "An unexpected error occurred while processing your purchase.");
             }
         }
+        public async Task<PurchaseResult<BillDto>> PurchaseNow(int productId, int userId)
+        {
+            var user = await _auth.User.FindAsync(userId);
+            var product = await _store.Products.FindAsync(productId);
+
+
+        }
         //implement a service to buy a single product right away without using cart if the user instantly wants to buy without adding to cart
     }
 }
